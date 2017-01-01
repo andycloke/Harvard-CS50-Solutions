@@ -3,10 +3,11 @@
 
 int main(void)
 {
+  int height = 200;
   do
   {
     printf("Height: ");
-    int height = get_int();
+    height = get_int();
   }
   while (height < 0 || height > 23);
   {
@@ -28,10 +29,6 @@ int main(void)
       for(int h = 1; h <= i; h++)
       {
         printf("#");   // right hand pyramid
-      }
-      for(int j = 1; j <= height-i; j++)
-      {
-        printf(" ");   //trailing spaces
       }
       printf("\n");
     }
