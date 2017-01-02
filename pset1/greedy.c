@@ -3,7 +3,7 @@
 
 int main(void)
 {
-  float change = -1.00;
+  float change;
   do
   {
     printf("Change required: ");
