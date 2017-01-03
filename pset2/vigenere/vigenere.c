@@ -1,5 +1,3 @@
-//Currently untested - require dev environement
-
 #include <cs50.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -30,16 +28,16 @@ int main(int argc, string argv[])
 
     //get plaintext from user
     printf("plaintext: ");
-    string name = get_string();
+    string p = get_string();
 
     //go to newline and ready output for ciphertext
-    printf("\nciphertext: ");
+    printf("ciphertext: ");
 
     for (int i = 0, j = 0, n = strlen(p); i < n; i++){
 
       //get character from keyword, and wrap around if plaintext is longer than keyword
       // j is used to avoid incrementing the keyword character used when enciphering non-alphabetical characters
-      char k = arvg[1][j % l];
+      char k = argv[1][j % l];
 
       // shift k so that 'A' or 'a' is 0. we know k is an alphabetical character
       if (isupper(k))

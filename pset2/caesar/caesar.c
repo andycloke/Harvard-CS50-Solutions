@@ -1,14 +1,11 @@
-//Commented lines will be added and tested wheni have access to cs50 dev environment
-
-//#include <cs50.h>
+#include <cs50.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 
-//int main(int argc, string argv[])
-int main(int argc, char *argv[])
+int main(int argc, string argv[])
 {
   if (argc != 2)
   {
@@ -21,9 +18,9 @@ int main(int argc, char *argv[])
     int k = atoi(argv[1]) % 26;
     //get plaintext from user
     printf("plaintext: ");
-    char p[] = "be sure to drink your Ovaltine";   //will remove this
-    //string name = get_string();
-    printf("\nciphertext: ");
+    string p = get_string();
+    
+    printf("ciphertext: ");
 
     for (int i = 0, n = strlen(p); i < n; i++){
       //encipher
