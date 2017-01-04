@@ -1,0 +1,59 @@
+0. What’s stdint.h?
+Defines a range of standardised integer types. This solves the problem of different systems implementing integers in different ways.
+
+1. What’s the point of using uint8_t, uint32_t, int32_t, and uint16_t in a program?
+Related to first question. Basically the basic integer data types (char, short, int, long, and long long) have differing implementations, so it makes sense to define exact, uniform definitions.
+How the system then uses basic types to implement these can then vary, but the number of bits is defined, and therefore known.
+
+The u in front of uint32_t and uint16_t means unsigned. This means all the bits are reserved for positive numbers. 
+
+2. How many bytes is a BYTE, a DWORD, a LONG, and a WORD, respectively?
+BYTE: 1
+DWORD: 4   (double word so 2 x 2)
+LONG: 4
+WORD: 2
+
+
+3. What (in ASCII, decimal, or hexadecimal) must the first two bytes of any BMP file be? Leading bytes used to identify file formats (with high probability) are generally called "magic numbers."
+ASCII: BM
+Hexadecimal: 0x424d
+
+4. What’s the difference between bfSize and biSize?
+The difference is that bfSize includes the headers. 
+
+i.e.
+
+bfSize is the size of the RGB triples, padding and headers. 
+biSize is the size of the RGB triples and padding.
+
+5. What does it mean if biHeight is negative?
+The bitmap is top-down - it starts in the upper-left corner.
+
+(If positive it starts in the bottom-left corner.)
+
+6. What field in BITMAPINFOHEADER specifies the BMP’s color depth (i.e., bits per pixel)?
+biBitCount
+
+7. Why might fopen return NULL in lines 24 and 32 of copy.c?
+User of program does not have privileges to read/ write files.
+
+The computer has no available memory (in case of writing file).
+
+Why is the third argument to fread always 1 in our code?
+This argument represents how many times we want to read. We only want to read the headers once, so it is 1 on leads 42 and 46. We then use for loop to traverse the image but only want to read once on each iteration, so it 1 again on line 77.
+
+What value does line 65 of copy.c assign to padding if bi.biWidth is 3?
+int padding =  (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
+bib.biWidth = 3
+sizeof(RGBTRIPLE) = 3
+=> padding = 3
+
+What does fseek do?
+Offsets the file pointer by a given number of bites, allowing you to read from a different part of a file.
+
+#include <stdio.h>
+int fseek(FILE* fp, long int offset, int from_where);
+
+
+What is SEEK_CUR?
+If you are using seek with the intention of moving the file pointer from its current location, you set the from_where argument in fseek to SEEK_CUR.
