@@ -25,7 +25,7 @@ node *hash_table[HASHTABLE_SIZE];
 
 /**
 * Returns integer hash value for a given a string
-* Credit: Brenda's Husband: https://www.reddit.com/r/cs50/comments/1x6vc8/pset6_trie_vs_hashtable/cf9nlkn/
+* https://www.reddit.com/r/cs50/comments/1x6vc8/pset6_trie_vs_hashtable/cf9nlkn/
 **/
 int hash(const char* needs_hashing)
 {
@@ -81,7 +81,7 @@ bool load(const char *dictionary)
     // iterate through dictionary words
     while (fscanf(dicptr, "%s", word) != EOF)
     {
-        // make a new word. TODO: free
+        // make a new word.
         node *new_node = malloc(sizeof(node));
 
         // check for error assigning memory
@@ -114,8 +114,23 @@ bool load(const char *dictionary)
  */
 unsigned int size(void)
 {
-    // TODO
-    return 0;
+    // dictionary size counter
+    int counter = 0;
+
+    // iterate through hashtable
+    for (int i = 0; i < HASHTABLE_SIZE; i++)
+    {
+        // set pointer to head of list
+        node *cursor = hash_table[i];
+
+        // traverse list
+        while (cursor != NULL)
+        {
+            counter++;
+            cursor = cursor->next;
+        }
+    }
+    return counter;
 }
 
 /**
@@ -123,6 +138,20 @@ unsigned int size(void)
  */
 bool unload(void)
 {
-    // TODO
-    return false;
+    // iterate through hashtable
+    for (int i = 0; i < HASHTABLE_SIZE; i++)
+    {
+        // set pointer to head of list
+        node *cursor = hash_table[i];
+
+        // traverse list
+        while (cursor != NULL)
+        {
+            node *temp = cursor;
+            cursor = cursor->next;
+            free(temp);
+        }
+        free(cursor);
+    }
+    return true;
 }
