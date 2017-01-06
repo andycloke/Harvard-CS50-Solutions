@@ -1,7 +1,35 @@
-0.  TODO
-1.  TODO
-2.  TODO
-3.  TODO
-4.  TODO
-5.  TODO
-6.  TODO
+0.  What is pneumonoultramicroscopicsilicovolcanoconiosis?
+an artificial long word said to mean a lung disease caused by inhaling very fine ash and sand dust.
+
+1.  According to its man page, what does getrusage do?
+Getrusage() returns information describing the resources utilized by the current process, or all its terminated child processes.
+
+Usage: getrusage(int who, struct rusage *r_usage);
+
+Parameters:
+who: RUSAGE_SELF or RUSAGE_CHILDREN
+r_usage: points to a buffer which is filled with various usage data, such as system time used.
+
+2.  Per that same man page, how many members are in a variable of type struct rusage?
+16
+
+3.  Why do you think we pass before and after by reference (instead of by value) to calculate, even though we’re not changing their contents?
+So that they are remained changed once rusage finished running. If they were passed by value, rusage would simply change a copy of them, and these changes would not be permanently stored after the function returns. (The same principle as the function swap() from lecture 4). 
+
+4.  Explain as precisely as possible, in a paragraph or more, how main goes about reading words from a file. In other words, convince us that you indeed understand how that function’s for loop works.
+fgetc is used with a file pointer to read a single character from the file. the file pointer is incremented until it hits the end of the file (EOF), allowing each character to be read.
+
+For each character, we first check whether is it alphabetical or an apostrophe that is not at the start of the word (i.e. a legitimate character). If it is it is added to a buffer for the current word, and the index of this buffer is incremented. The length of this buffer is compared to the maximum possible word length, and if larger than the length we skip over the remaining letters in the input word and reset the index of this buffer. 
+
+If any of the characters are numbers we do the same (skip over the remaining letters in the input word and reset the index of the word buffer).
+
+If the index of our word buffer is greater than 0 and the next input character is not alphanumerical or an apostrophe we assume this input is a space. This indicates that we have found a word so we add ‘\0’ to the word to signify the end of a string. The word counter is then incremented to indicate that we have found a word. 
+
+We then check if the word is misspelled by calling check(), using the NOT of the return value of check() as a misspelled flag. If the word is misspelled (not in the dictionary) it is printed, and the misspellings counter is incremented.
+
+5.  Why do you think we used fgetc to read each word’s characters one at a time rather than use fscanf with a format string like "%s" to read whole words at a time? Put another way, what problems might arise by relying on fscanf alone?
+fscanf could return a string that is longer than the maximum allowed or contains numbers. We obviously could then iterate through the characters in the screen, but this would be no faster than what we are already doing.
+
+6. Why do you think we declared the parameters for check and load as const (which means "constant")?
+To indicate that check and load do not alter the values pointed to by their inputs, (they just read them).
+
