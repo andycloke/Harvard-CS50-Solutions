@@ -6,7 +6,7 @@ import sys
 def main():
     # check correct usage
     if len(sys.argv) != 2:
-        sys.exit('Error: vigenere should be called with 1 command line argument');
+        sys.exit('Usage: vigenere.py ABC');
 
     # keyword
     keyword = sys.argv[1]

@@ -6,7 +6,7 @@ import sys
 def main():
     # check correct usage
     if len(sys.argv) != 2:
-        sys.exit('Error: caesar should be called with 1 command line argument');
+        sys.exit('Usage: caesar.py 13');
 
     # convert key to int and wrap it around alphabet
     k = int(sys.argv[1]) % 26
