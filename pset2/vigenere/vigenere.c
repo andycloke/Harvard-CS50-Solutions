@@ -9,14 +9,15 @@ int main(int argc, string argv[])
 {
   if (argc != 2)
   {
-    printf("Error: caesar should be called with 1 command line argument\n");
+    printf("Error: vigenere should be called with 1 command line argument\n");
     return 1;
   }
   else
   {
+    // length of keyword
     int l = strlen(argv[1]);
 
-    //check that command line keyword only contains letters
+    // check that command line keyword only contains letters
     for (int i = 0; i < l; i++)
     {
         if (isalpha( argv[1][i]) == false)
@@ -26,16 +27,16 @@ int main(int argc, string argv[])
         }
     }
 
-    //get plaintext from user
+    // get plaintext from user
     printf("plaintext: ");
     string p = get_string();
 
-    //go to newline and ready output for ciphertext
+    // go to newline and ready output for ciphertext
     printf("ciphertext: ");
 
     for (int i = 0, j = 0, n = strlen(p); i < n; i++){
 
-      //get character from keyword, and wrap around if plaintext is longer than keyword
+      // get character from keyword, and wrap around if plaintext is longer than keyword
       // j is used to avoid incrementing the keyword character used when enciphering non-alphabetical characters
       char k = argv[1][j % l];
 
