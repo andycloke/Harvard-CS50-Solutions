@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Stock Trader
+{% endblock %}
+
+{% block main %}
+    <table class="table">
+      <thead>
+          <tr>
+              <td>Stock</td>
+              <td>Price</td>
+              <td>Owned</td>
+              <td>Value</td>
+          </tr>
+      </thead>
+      <tbody>
+        {% for stock in stocks %}
+            <tr>
+                <td> {{ stock.symbol }} </td>
+                <td> {{ stock.price }} </td>
+                <td> {{ stock.num_shares }} </td>
+                <td> {{ stock.value }} </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
+    <br>
+    <br>
+    <table class="table">
+      <tbody>
+        <tr>
+            <td>Cash Balance</td>
+            <td> {{ cash_balance }} </td>
+        </tr>
+        <tr>
+            <td>Value of Shares</td>
+            <td> {{ share_value }} </td>
+        </tr>
+        <tr>
+            <td>Total</td>
+            <td> {{ total_value }} </td>
+        </tr>
+      </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote a Stock Price
+{% endblock %}
+
+{% block main %}
+    <form action="{{ url_for('quote') }}" method="post">
+        <fieldset>
+            <div class="form-group">
+                <label for="symbol">Stock Symbol:</label><br>
+                <input autocomplete="off" autofocus class="form-control" name="symbol" id="symbol" placeholder="e.g. NFLX" type="text"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Get Stock Price</button>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}

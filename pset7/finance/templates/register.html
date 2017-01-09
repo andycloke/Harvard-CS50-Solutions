@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form action="{{ url_for('register') }}" method="post">
+        <fieldset>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input autocomplete="off" autofocus class="form-control" name="username" id="username" type="text"/>
+            </div>
+            <div class="form-group">
+                 <label for="password">Password:</label>
+                <input class="form-control" name="password" id="password" type="password"/>
+            </div>
+            <div class="form-group">
+                <label for="retypepassword">Retype Password:</label>
+                <input class="form-control" name="retypepassword" id="retypepassword" type="password"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Register</button>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}

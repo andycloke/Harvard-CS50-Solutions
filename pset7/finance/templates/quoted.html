@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Current Stock Price
+{% endblock %}
+
+{% block main %}
+    <table class="table">
+      <tbody>
+        <tr>
+          <td>Company:</td>
+          <td>{{ name }}</td>
+        </tr>
+        <tr>
+          <td>Current Price:</td>
+          <td>{{ price }}</td>
+        </tr>
+        <tr>
+          <td>Symbol:</td>
+          <td>{{ symbol }}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+
+      </tbody>
+    </table>
+{% endblock %}
