@@ -33,3 +33,15 @@ main td
 {
     margin-top: 70px;
 }
+
+.table-heading
+{
+    text-align:center;
+}
+
+
+.index-form
+{
+    display:inline-block;
+    width:50%;
+}

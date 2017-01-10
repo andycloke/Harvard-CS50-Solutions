@@ -68,3 +68,7 @@ def lookup(symbol):
 def usd(value):
     """Formats value as USD."""
     return "${:,.2f}".format(value)
+
+def time(string):
+    """Formats timestring into YYYY-MM-DD HH-MM-SS."""
+    return string[0:19]

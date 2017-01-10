@@ -5,30 +5,15 @@
 {% endblock %}
 
 {% block main %}
+    <h4 class="table-heading">Financial Overview</h4>
+
     <table class="table">
       <thead>
           <tr>
-              <td>Stock</td>
-              <td>Price</td>
-              <td>Owned</td>
-              <td>Value</td>
-          </tr>
+            <td></td>
+            <td></td>
+        </tr>
       </thead>
-      <tbody>
-        {% for stock in stocks %}
-            <tr>
-                <td> {{ stock.symbol }} </td>
-                <td> {{ stock.price }} </td>
-                <td> {{ stock.num_shares }} </td>
-                <td> {{ stock.value }} </td>
-            </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <br>
-    <br>
-    <br>
-    <table class="table">
       <tbody>
         <tr>
             <td>Cash Balance</td>
@@ -44,4 +29,59 @@
         </tr>
       </tbody>
     </table>
+    <br>
+    <br>
+
+
+    {% if stocks %}
+    <h4 class="table-heading">Shares Owned</h4>
+        <table class="table">
+          <thead>
+              <tr>
+                  <td>Stock</td>
+                  <td>Price</td>
+                  <td>Owned</td>
+                  <td>Value</td>
+                  <td>Buy</td>
+                  <td>Sell</td>
+              </tr>
+          </thead>
+          <tbody>
+            {% for stock in stocks %}
+                <tr>
+                    <td> {{ stock.symbol }} </td>
+                    <td> {{ stock.price }} </td>
+                    <td> {{ stock.num_shares }} </td>
+                    <td> {{ stock.value }} </td>
+                    <td>
+                        <form action="{{ url_for('buy') }}" method="post">
+                            <fieldset>
+                                <div class="form-group hidden">
+                                    <input autocomplete="off" class="form-control" name="symbol" id="symbol" value= {{ stock.symbol }} type="text"/>
+                                </div>
+                                <div class="form-group">
+                                    <input autocomplete="off" class="form-control index-form" name="volume" id="volume" placeholder="100" type="number"/>
+                                    <button class="btn btn-default" type="submit">Buy</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('sell') }}" method="post">
+                            <fieldset>
+                                <div class="form-group hidden">
+                                    <input autocomplete="off" class="form-control" name="symbol" id="symbol" value= {{ stock.symbol }} type="text"/>
+                                </div>
+                                <div class="form-group">
+                                    <input autocomplete="off" class="form-control index-form" name="volume" id="volume" placeholder="100" type="number"/>
+                                    <button class="btn btn-default" type="submit">Sell</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% endif %}
 {% endblock %}

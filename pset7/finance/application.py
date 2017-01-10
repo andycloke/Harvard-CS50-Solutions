@@ -39,7 +39,7 @@ def index():
     id = session["user_id"]
 
     # get list of shares owned by user
-    owned = db.execute("SELECT symbol, shares FROM portfolio WHERE id = :id", id=id)
+    owned = db.execute("SELECT symbol, num_shares FROM portfolio WHERE id = :id", id=id)
 
     # initialise array to be passed to template
     stocks = []
@@ -66,10 +66,10 @@ def index():
         dic['price'] = usd(price['price'])
 
         # set dict volume to volume owned
-        dic['num_shares'] = share['shares']
+        dic['num_shares'] = share['num_shares']
 
         # value of current shares
-        val = share['shares'] * price['price']
+        val = share['num_shares'] * price['price']
 
         # set dict value
         dic['value'] = usd(val)
@@ -137,18 +137,18 @@ def buy():
         if purchase_cost <= cash:
 
             # check if user already owns any stock in this company
-            existing = db.execute("SELECT shares FROM portfolio WHERE id = :id AND symbol = :symbol", id=id, symbol=symbol)
+            existing = db.execute("SELECT num_shares FROM portfolio WHERE id = :id AND symbol = :symbol", id=id, symbol=symbol)
 
             # if no existing shares, add them
             if not existing:
-                new = db.execute("INSERT INTO portfolio (id, symbol, shares) VALUES(:id, :symbol, :shares)", id=id, symbol=symbol, shares=volume)
+                new = db.execute("INSERT INTO portfolio (id, symbol, num_shares) VALUES(:id, :symbol, :num_shares)", id=id, symbol=symbol, num_shares=volume)
 
             # if there are existing shares, add new volume to them
             else:
-                add = db.execute("UPDATE portfolio SET shares = :shares WHERE id = :id AND symbol = :symbol", shares=existing[0]['shares'] + volume, id=id, symbol=symbol)
+                add = db.execute("UPDATE portfolio SET num_shares = :num_shares WHERE id = :id AND symbol = :symbol", num_shares=existing[0]['num_shares'] + volume, id=id, symbol=symbol)
 
             # set date string
-            dstring = str(datetime.datetime.utcnow())
+            dstring = time(str(datetime.datetime.utcnow()))
 
             # update transaction history
             result2 = db.execute("INSERT INTO `transaction` (id, symbol, volume, share_price, dtstamp) VALUES(:id, :symbol, :volume, :share_price, :dtstamp)", id=id, symbol=symbol, volume=volume, share_price=stock_info['price'], dtstamp=dstring)
@@ -156,16 +156,25 @@ def buy():
             # reduce cash balance
             result = db.execute("UPDATE users SET cash = :cash WHERE id = :id", cash=cash-purchase_cost, id=id)
 
-            return apology("TODO: index")
+            # redirect user to home page
+            return redirect(url_for("index"))
         else:
             return apology("insufficient funds")
-
 
 @app.route("/history")
 @login_required
 def history():
     """Show history of transactions."""
-    return apology("TODO")
+    # query database for history
+    transactions = db.execute("SELECT symbol, volume, share_price, dtstamp FROM `transaction` WHERE id = :id", id = session["user_id"])
+
+    # initialise dict
+    dic = {}
+
+    # interate through history array
+
+    # pass data to template
+    return render_template("history.html", transactions = transactions)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -275,7 +284,7 @@ def register():
         # automatically log user in after registration
         session["user_id"] = result
 
-       # redirect user to home page
+        # redirect user to home page
         return redirect(url_for("index"))
 
     # else if user reached route via GET (as by clicking a link or via redirect)
@@ -287,4 +296,65 @@ def register():
 @login_required
 def sell():
     """Sell shares of stock."""
-    return apology("TODO")
+
+     # if user reached route via GET return them an input form
+    if request.method == "GET":
+        return render_template("sell.html")
+
+    # if user reached route via POST (as by submitting a form via POST)
+    elif request.method == "POST":
+
+        # get id as it is used many times
+        id = session["user_id"]
+
+        # get symbol input
+        symbol = request.form.get("symbol")
+
+         # get share volume requested
+        volume = int(request.form.get("volume"))
+
+        # ensure stock symbol was submitted
+        if not symbol:
+            return apology("you must provide a stock symbol")
+
+        # ensure positive volume (integer rule handled elsewhere)
+        elif volume <= 0:
+            return apology("volume must be integer greater than 0")
+
+        # lookup stock on yahoo
+        stock_info = lookup(symbol)
+
+        # if error looking stock up
+        if not stock_info:
+            return apology("that stock symbol doesn't exist")
+
+        # check if user already owns any stock in this company
+        existing = db.execute("SELECT num_shares FROM portfolio WHERE id = :id AND symbol = :symbol", id=id, symbol=symbol)
+
+        # if sufficient cash, make purchase, else return apology
+        if not existing:
+            return apology("you don't own this stock")
+        else:
+            if existing[0]['num_shares'] < volume:
+                return apology('you cannot sell more shares than you own')
+            else:
+                # query database for
+                cash = db.execute("SELECT cash FROM users WHERE id = :id", id=id)
+                cash = cash[0]['cash']
+
+                minus = db.execute("UPDATE portfolio SET num_shares = :num_shares WHERE id = :id AND symbol = :symbol", num_shares=existing[0]['num_shares'] - volume, id=id, symbol=symbol)
+
+                # set date string
+                dstring = str(datetime.datetime.utcnow())
+
+                # update transaction history
+                result2 = db.execute("INSERT INTO `transaction` (id, symbol, volume, share_price, dtstamp) VALUES(:id, :symbol, :volume, :share_price, :dtstamp)", id=id, symbol=symbol, volume=-volume, share_price=stock_info['price'], dtstamp=dstring)
+
+                # calculate sale price
+                sale_price = stock_info['price'] * volume
+
+                # increase cash balance
+                result = db.execute("UPDATE users SET cash = :cash WHERE id = :id", cash=cash+sale_price, id=id)
+
+                # redirect user to home page
+                return redirect(url_for("index"))

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Transaction History
+{% endblock %}
+
+{% block main %}
+    <h4 class="table-heading">Transaction History</h4>
+    {% if transactions %}
+        <table class="table">
+          <thead>
+              <tr>
+                  <td>Stock</td>
+                  <td>Price</td>
+                  <td>Bought/ Sold (-)</td>
+                  <td>Time</td>
+              </tr>
+          </thead>
+          <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td> {{ transaction.symbol }} </td>
+                    <td> {{ transaction.share_price }} </td>
+                    <td> {{ transaction.volume }} </td>
+                    <td> {{ transaction.dtstamp }} </td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
