@@ -1,6 +1,6 @@
 # C$50 - Finance
 A paper trading app built as a solution to [problem set 7](http://docs.cs50.net/problems/finance/finance.html).
-Built in the [CS50 online IDE](https://cs50.io)
+Built in the [CS50 online IDE (requires you to be enrolled with an edx/Harvard/yale account)](https://cs50.io)
 
 ## Technologies Used
 
@@ -15,4 +15,4 @@ CREATE TABLE 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'username
 CREATE TABLE 'transaction' ('transaction_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'id' INTEGER, 'symbol' TEXT, 'volume'
 INTEGER, 'share_price' NUMERIC, 'dtstamp' TEXT)
 
-CREATE TABLE 'portfolio' ('id' INTEGER NOT NULL, 'symbol' TEXT NOT NULL,'num_shares' INTEGER NOT NULL DEFAULT 0 , PRIMARY KEY ('id', 'symbol'))
+CREATE TABLE 'portfolio' ('id' INTEGER NOT NULL, 'symbol' TEXT NOT NULL,'num_shares' INTEGER NOT NULL DEFAULT 0 , PRIMARY KEY ('id', 'symbol'))
